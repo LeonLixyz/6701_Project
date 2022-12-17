@@ -56,3 +56,38 @@ def load_data():
         nonzero_idxs.append(sorted(nonzero_idx))
 
     return idx_to_words, articles, nonzero_idxs
+
+# load data with trimming
+def load_data(data_path,vocab_path, trim): 
+  with open(data_path, 'r') as f:
+     docs = f.readlines()
+  docs = docs[:np.int(trim*len(docs))]
+  #print(docs)
+  N = len(docs)
+
+  with open(vocab_path, 'r') as h:
+    lines = h.readlines()
+    #print(lines)
+  string = ''.join(lines)
+  #print(type(string))
+  words_map = string.split() 
+  #print(words_map)
+  V = len(words_map)
+  #print(V)
+
+  articles = np.zeros((N,V))
+  words_idx_obs=[]
+
+  for i in tqdm(range(N)):
+    doc_obs = []
+    doc_info = docs[i].split(' ')[1:] 
+    for j in range(len(doc_info)): 
+      word_info = doc_info[j].split(':')
+      idx = int(word_info[0])
+      #print(word_info) 
+      articles[i,idx] = int(word_info[1]) 
+      doc_obs.append(idx) 
+
+    words_idx_obs.append(sorted(doc_obs))
+
+  return words_map,articles, words_idx_obs
