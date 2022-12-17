@@ -1,5 +1,7 @@
 '''
-Data Loader
+LDA 
+
+Reference: https://github.com/taekb/lda\_cavi\\ 
 '''
 
 import numpy as np
